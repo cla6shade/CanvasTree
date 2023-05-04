@@ -6,35 +6,73 @@ class Drawer {
         this.width = treeCanvas.width;
         this.height = treeCanvas.height;
 
-        this.stemWidth = 80;
-        this.stemHeight = 700;
+        this.stemWidth = this.getRandomNumber(16, 18)
+        this.stemHeight = 160;
+
+        this.depth = 11;
+
+        this.endpoints = [];
 
         this.color = "rgba(0,0,0,1)";
     }
 
-    draw() {
+    init() {
         this.drawGround();
-        let [endX, endY] = this.drawStem(Math.floor(this.width / 2), this.height - 200);
+        this.drawBranch(Math.floor(this.width / 2), this.height - 200, -90, this.stemWidth,
+            this.stemHeight, 0);
     }
 
     drawGround() {
         this.ctx.fillRect(0, this.height - 200, this.width, 200);
     }
 
-    drawStem(startX, startY) {
-        //줄기를 그리고 나서 끝부분 좌표 리턴
-        let endY = startY - this.stemHeight;
-        this.stroke(this.stemWidth, startX, startY, startX, endY);
-        return [startX, endY]
+    drawBranch(startX, startY, angle, width, height, step) {
+        let rad = angle / 180 * Math.PI;
+
+        if (step > this.depth) {
+            this.endpoints.push([startX, startY]);
+            return;
+        }
+
+        ++step;
+        height = step === 1 ? this.stemHeight : this.getNextHeight(height, step);
+        width = step === 1 ? this.stemWidth : this.getNextWidth(width, step);
+        let endX = startX + (height * Math.cos(rad));
+        let endY = startY + (height * Math.sin(rad));
+
+        this.stroke(width, startX, startY, endX, endY)
+
+        this.drawBranch(endX, endY, angle - this.getRandomAngle(step),
+            width, height, step);
+        this.drawBranch(endX, endY, angle + this.getRandomAngle(step),
+            width, height, step);
     }
 
-    drawBranch(startX, startY, radOffset, step) {
-        let branchWidth = this.getBranchWidth(step);
-        let branchHeight = this.getBranchHeight(step);
+    getNextWidth(width, step) {
+        if (step < 3) {
+            return width * 0.8;
+        } else if (step < 8){
+            return width * 0.7
+        }
+        return width < 1 ? 0.5 : width * this.getRandomNumber(70, 73) / 100;
     }
 
-    getRandomRadian(radOffset){
+    getNextHeight(height, step) {
+        if (step > 8) {
+            return height * this.getRandomNumber(50, 90) / 100;
+        } else if (step > 4) {
+            return height * this.getRandomNumber(60, 90) / 100
+        } else return height * this.getRandomNumber(70, 80) / 100;
     }
+
+    getRandomAngle(step) {
+        return step > 2 ? this.getRandomNumber(12, 25) : this.getRandomNumber(10, 20);
+    }
+
+    getRandomNumber(min, max) {
+        return min + Math.floor(Math.random() * (max - min + 1));
+    }
+
 
     stroke(lineWidth, startX, startY, endX, endY) {
         let ctx = this.ctx;
@@ -52,13 +90,6 @@ class Drawer {
         ctx.closePath();
     }
 
-    getBranchWidth(step) {
-        return this.stemWidth * Math.pow(0.66667, step);
-    }
-
-    getBranchHeight(step) {
-        return this.stemHeight * Math.pow(0.5, step);
-    }
 }
 
 export default Drawer;

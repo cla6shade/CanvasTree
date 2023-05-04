@@ -21,7 +21,7 @@ class TreeCanvas {
         this.ctx.scale(pixelRatio, pixelRatio);
 
         let drawer = new Drawer(this);
-        drawer.draw();
+        drawer.init();
     }
 }
 
