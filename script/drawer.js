@@ -14,12 +14,19 @@ class Drawer {
         this.endpoints = [];
 
         this.color = "rgba(0,0,0,1)";
+
+        this.treeCanvas.canvasElement.onclick = this.handleClick.bind(this);
     }
 
     init() {
         this.drawGround();
         this.drawBranch(Math.floor(this.width / 2), this.height - 200, -90, this.stemWidth,
             this.stemHeight, 0);
+    }
+
+    handleClick (e){
+        console.log("x: " + e.offsetX);
+        console.log("y: " + e.offsetY);
     }
 
     drawGround() {
@@ -76,7 +83,7 @@ class Drawer {
     }
 
     getRandomAdditionalAngle(){
-        return this.getRandomNumber(-10, 10);
+        return this.getRandomNumber(-7, 7);
     }
 
     getRandomNumber(min, max) {

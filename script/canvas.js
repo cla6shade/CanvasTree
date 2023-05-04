@@ -2,9 +2,9 @@ import Drawer from "./drawer.js";
 
 class TreeCanvas {
     constructor() {
-        this.canvas = document.getElementById("tree-canvas");
-        if (this.canvas.getContext)
-            this.ctx = this.canvas.getContext("2d");
+        this.canvasElement = document.getElementById("tree-canvas");
+        if (this.canvasElement.getContext)
+            this.ctx = this.canvasElement.getContext("2d");
         this.resize();
         window.addEventListener("resize", this.resize.bind(this));
     }
@@ -15,8 +15,8 @@ class TreeCanvas {
         this.clientWidth = document.body.clientWidth;
         this.clientHeight = document.body.clientHeight;
 
-        this.width = this.canvas.width = this.clientWidth * pixelRatio;
-        this.height = this.canvas.height = this.clientHeight * pixelRatio;
+        this.width = this.canvasElement.width = this.clientWidth * pixelRatio;
+        this.height = this.canvasElement.height = this.clientHeight * pixelRatio;
 
         this.ctx.scale(pixelRatio, pixelRatio);
 
