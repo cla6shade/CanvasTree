@@ -6,10 +6,10 @@ class Drawer {
         this.width = treeCanvas.width;
         this.height = treeCanvas.height;
 
-        this.stemWidth = this.getRandomNumber(16, 18)
+        this.stemWidth = this.getRandomNumber(23, 27)
         this.stemHeight = 160;
 
-        this.depth = 11;
+        this.depth = 10;
 
         this.endpoints = [];
 
@@ -41,20 +41,26 @@ class Drawer {
         let endY = startY + (height * Math.sin(rad));
 
         this.stroke(width, startX, startY, endX, endY)
+        this.drawBranchEnd(endX, endY, width);
 
         this.drawBranch(endX, endY, angle - this.getRandomAngle(step),
             width, height, step);
         this.drawBranch(endX, endY, angle + this.getRandomAngle(step),
             width, height, step);
+
+        if(this.getRandomNumber(0, 3) === 0){
+            this.drawBranch(endX, endY, angle + this.getRandomAdditionalAngle(),
+                width, height, step);
+        }
     }
 
     getNextWidth(width, step) {
-        if (step < 3) {
-            return width * 0.8;
+        if (step < 4) {
+            return width * 0.7;
         } else if (step < 8){
-            return width * 0.7
+            return width * 0.7;
         }
-        return width < 1 ? 0.5 : width * this.getRandomNumber(70, 73) / 100;
+        return width < 1 ? 0.5 : width * this.getRandomNumber(60, 70) / 100;
     }
 
     getNextHeight(height, step) {
@@ -69,10 +75,24 @@ class Drawer {
         return step > 2 ? this.getRandomNumber(12, 25) : this.getRandomNumber(10, 20);
     }
 
+    getRandomAdditionalAngle(){
+        return this.getRandomNumber(-10, 10);
+    }
+
     getRandomNumber(min, max) {
         return min + Math.floor(Math.random() * (max - min + 1));
     }
 
+    drawBranchEnd(x, y, branchWidth){
+        let ctx = this.ctx;
+        ctx.beginPath();
+        let width = branchWidth / 2;
+        ctx.arc(x, y, width, 0, 2 * Math.PI);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+
+        ctx.closePath();
+    }
 
     stroke(lineWidth, startX, startY, endX, endY) {
         let ctx = this.ctx;
