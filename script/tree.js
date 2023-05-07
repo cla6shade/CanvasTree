@@ -18,7 +18,6 @@ class Tree {
         this.branches = [];
 
         this.color = "rgba(0,0,0,1)";
-        this.endpointColor = "rgba(255, 171, 196, 0.8)";
     }
 
     init() {
@@ -28,8 +27,6 @@ class Tree {
 
 
     addBranch(startX, startY, angle, width, height, step) {
-        let rad = angle / 180 * Math.PI;
-
         if (step > this.depth) {
             return;
         }

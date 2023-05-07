@@ -45,7 +45,6 @@ export default class Branch {
         let ctx = this.ctx;
         ctx.lineWidth = this.width;
 
-        ctx.fillStyle = this.color;
         ctx.strokeStyle = this.color;
 
         ctx.beginPath();
@@ -54,7 +53,6 @@ export default class Branch {
         ctx.lineTo(this.endX, this.endY);
 
         ctx.stroke();
-        ctx.fill();
 
         ctx.closePath();
     }
