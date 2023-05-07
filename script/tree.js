@@ -13,7 +13,7 @@ class Tree {
         this.stemWidth = this.getRandomNumber(23, 27)
         this.stemHeight = this.getRandomNumber(140, 180);
 
-        this.depth = this.getRandomNumber(8, 10);
+        this.depth = this.getRandomNumber(9, 11);
 
         this.branches = [];
 
