@@ -28,8 +28,6 @@ class TreeCanvas {
         let offsetX = e.offsetX;
         let tree = new Tree(offsetX, this);
         tree.init();
-        tree.draw();
-        window.requestAnimationFrame(tree.draw.bind(tree));
     }
 
     drawGround(){

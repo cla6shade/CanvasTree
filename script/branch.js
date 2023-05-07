@@ -13,17 +13,13 @@ export default class Branch {
         this.step = step;
 
         this.calculateEndXY();
-    }
-
-    draw(){
-        this.drawBar();
-        this.drawBranchEnd();
+        this.calculateFramePoints();
     }
 
     calculateEndXY(){
-        let rad = this.deg2rad(this.angle);
-        this.endX = this.startX + (this.height * Math.cos(rad));
-        this.endY = this.startY + (this.height * Math.sin(rad));
+        this.rad = this.deg2rad(this.angle);
+        this.endX = this.startX + (this.height * Math.cos(this.rad));
+        this.endY = this.startY + (this.height * Math.sin(this.rad));
     }
 
     getEndXY(){
@@ -41,20 +37,40 @@ export default class Branch {
         ctx.closePath();
     }
 
+    calculateFramePoints() {
+        this.framePoints = [];
+        this.offsetX = this.startX;
+        this.offsetY = this.startY;
+
+        this.nowFrame = 0;
+        let fragment = this.height / 25;
+
+        for(let i=1;i<this.height;i+=fragment){
+            let x = this.startX + (i * Math.cos(this.rad));
+            let y = this.startY + (i * Math.sin(this.rad));
+            this.framePoints.push([x, y]);
+        }
+        this.framePoints.push([this.endX, this.endY])
+    }
+
     drawBar() {
+        if(this.nowFrame >= this.framePoints.length){
+            this.drawBranchEnd();
+            return true;
+        }
+        let [x, y] = this.framePoints[this.nowFrame];
         let ctx = this.ctx;
-        ctx.lineWidth = this.width;
-
-        ctx.strokeStyle = this.color;
-
         ctx.beginPath();
-
-        ctx.moveTo(this.startX, this.startY);
-        ctx.lineTo(this.endX, this.endY);
-
+        ctx.lineWidth = this.width;
+        ctx.moveTo(this.offsetX, this.offsetY);
+        ctx.lineTo(x, y);
+        ctx.fillStyle = this.color;
+        ctx.strokeStyle = this.color;
+        ctx.fill();
         ctx.stroke();
 
-        ctx.closePath();
+        this.nowFrame ++;
+        return false;
     }
 
     deg2rad(angle){
