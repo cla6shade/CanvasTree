@@ -1,4 +1,4 @@
-import Drawer from "./drawer.js";
+import Tree from "./tree.js";
 
 class TreeCanvas {
     constructor() {
@@ -7,6 +7,7 @@ class TreeCanvas {
             this.ctx = this.canvasElement.getContext("2d");
         this.resize();
         window.addEventListener("resize", this.resize.bind(this));
+        this.canvasElement.addEventListener("click", this.onClickCanvas.bind(this));
     }
 
     resize() {
@@ -20,8 +21,19 @@ class TreeCanvas {
 
         this.ctx.scale(pixelRatio, pixelRatio);
 
-        let drawer = new Drawer(this);
-        drawer.init();
+        this.drawGround();
+    }
+
+    onClickCanvas(e){
+        let offsetX = e.offsetX;
+        let tree = new Tree(offsetX, this);
+        tree.init();
+        tree.draw();
+        window.requestAnimationFrame(tree.draw.bind(tree));
+    }
+
+    drawGround(){
+        this.ctx.fillRect(0, this.height - 200, this.width, 200);
     }
 }
 
