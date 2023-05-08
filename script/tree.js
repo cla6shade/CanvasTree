@@ -58,9 +58,14 @@ class Tree {
         }
     }
 
+    onDrawFininsh(){
+        window.cancelAnimationFrame(this.stepAnimationEvent);
+        this.treeCanvas.setGenerationStatus(false);
+    }
+
     draw() {
         if(this.drawStep >= this.depth){
-            window.cancelAnimationFrame(this.stepAnimationEvent);
+            this.onDrawFininsh();
             return;
         }
         let branches = this.branches[this.drawStep];

@@ -43,7 +43,7 @@ export default class Branch {
         this.offsetY = this.startY;
 
         this.nowFrame = 0;
-        let fragment = this.height / 25;
+        let fragment = this.height / 8;
 
         for(let i=1;i<this.height;i+=fragment){
             let x = this.startX + (i * Math.cos(this.rad));

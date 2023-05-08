@@ -5,6 +5,10 @@ class TreeCanvas {
         this.canvasElement = document.getElementById("tree-canvas");
         if (this.canvasElement.getContext)
             this.ctx = this.canvasElement.getContext("2d");
+
+        this.trees = [];
+        this.generating = false;
+
         this.resize();
         window.addEventListener("resize", this.resize.bind(this));
         this.canvasElement.addEventListener("click", this.onClickCanvas.bind(this));
@@ -25,9 +29,16 @@ class TreeCanvas {
     }
 
     onClickCanvas(e){
-        let offsetX = e.offsetX;
-        let tree = new Tree(offsetX, this);
-        tree.init();
+        if(! this.generating){
+            this.generating = true;
+            let offsetX = e.offsetX;
+            let tree = new Tree(offsetX, this);
+            tree.init();
+        }
+    }
+
+    setGenerationStatus(status){
+        this.generating = status;
     }
 
     drawGround(){
